@@ -27,25 +27,25 @@ try {
   //    next();
   //})
 
-  //var corsOptions: CorsOptions = {
-  //  origin: function (origin, callback) {
-  //    if (whitelist.indexOf(z.string().parse(origin)) !== -1) {
-  //      callback(null, true);
-  //    } else {
-  //      callback(new Error("Not allowed by CORS"));
-  //    }
-  //  },
-  //  credentials: true,
-  //  methods: ["GET", "DELETE", "POST"],
-  //  allowedHeaders: ["Content-Type"],
-  //  exposedHeaders: ["set-cookie"],
-  //};
+  var corsOptions: CorsOptions = {
+   origin: function (origin, callback) {
+     if (whitelist.indexOf(z.string().parse(origin)) !== -1) {
+       callback(null, true);
+     } else {
+       callback(new Error("Not allowed by CORS"));
+     }
+   },
+   credentials: true,
+   methods: ["GET", "DELETE", "POST"],
+   allowedHeaders: ["Content-Type"],
+   exposedHeaders: ["set-cookie"],
+  };
 
   app.get("/", (req: Request, res: Response) => res.end("Live"));
   app.get("/api/auth/redirect", handleRedirect);
 
-  //app.options("*", cors(corsOptions));
-  //app.use(cors(corsOptions));
+  app.options("*", cors(corsOptions));
+  app.use(cors(corsOptions));
   app.use(express.json());
   app.use(cookieParser());
   app.use(authRouter);
