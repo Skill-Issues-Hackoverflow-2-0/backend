@@ -107,10 +107,44 @@ const linkVehicleToUser = async (req: Request, res: Response) => {
   });
 };
 
+const corsShit = async (req: Request, res: Response) => {
+  asyncWrapper(req, res, async (req: Request, res: Response) => {
+    const { latlong, postion } = req.body;
+    console.log(latlong, postion);
+
+    const url = `https://api.tomtom.com/routing/1/calculateRoute/${postion[0]}%2C${postion[1]}%3A${latlong.lat}%2C${latlong.lon}/json`;
+
+    const params = new URLSearchParams({
+      instructionsType: "text",
+      travelMode: "bicycle",
+      key: "nG6oY1L34rbTfoLz0D205CrB42a3mf8m",
+    });
+
+    const headers = {
+      Accept: "*/*",
+    };
+
+    fetch(`${url}?${params}`, {
+      method: "GET",
+      headers: headers,
+    })
+      .then((res) => res.json())
+      .then((data) => {
+        console.log(data);
+        res.status(200).json({ message: "success", data });
+      })
+      .catch((error) => {
+        console.log(error);
+        res.status(500).json({ message: "error", error });
+      });
+  });
+};
+
 export {
   editUser,
   usersList,
   verifyAccessToResorce,
   setUserInfo,
   linkVehicleToUser,
+  corsShit,
 };

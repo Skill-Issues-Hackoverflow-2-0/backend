@@ -28,17 +28,17 @@ try {
   //})
 
   var corsOptions: CorsOptions = {
-   origin: function (origin, callback) {
-     if (whitelist.indexOf(z.string().parse(origin)) !== -1) {
-       callback(null, true);
-     } else {
-       callback(new Error("Not allowed by CORS"));
-     }
-   },
-   credentials: true,
-   methods: ["GET", "DELETE", "POST"],
-   allowedHeaders: ["Content-Type"],
-   exposedHeaders: ["set-cookie"],
+    origin: function (origin, callback) {
+      if (whitelist.indexOf(z.string().parse(origin)) !== -1) {
+        callback(null, true);
+      } else {
+        callback(new Error("Not allowed by CORS"));
+      }
+    },
+    credentials: true,
+    methods: ["GET", "DELETE", "POST"],
+    allowedHeaders: ["Content-Type"],
+    exposedHeaders: ["set-cookie"],
   };
 
   app.get("/", (req: Request, res: Response) => res.end("Live"));
@@ -49,6 +49,7 @@ try {
   app.use(express.json());
   app.use(cookieParser());
   app.use(authRouter);
+  app.use(usersRouter);
   app.listen(process.env.PORT, () => {
     console.log(`Server live on port: ${process.env.PORT}`);
   });
